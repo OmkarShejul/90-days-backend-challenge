@@ -1,0 +1,11 @@
+package com.omkar.jobtracker.service;
+
+import com.omkar.jobtracker.entity.User;
+import java.util.List;
+
+public interface UserService {
+
+    User createUser(User user);
+
+    List<User> getAllUsers();
+}
