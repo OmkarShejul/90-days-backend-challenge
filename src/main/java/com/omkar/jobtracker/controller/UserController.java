@@ -1,10 +1,13 @@
 package com.omkar.jobtracker.controller;
 
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
-
+import com.omkar.jobtracker.dto.UserRequestDto;
+import com.omkar.jobtracker.dto.UserResponseDto;
 import com.omkar.jobtracker.entity.User;
 import com.omkar.jobtracker.service.UserService;
+
+import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -17,12 +20,21 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
+    public UserResponseDto createUser(
+            @Valid @RequestBody UserRequestDto dto) {
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+
+        User savedUser = userService.createUser(user);
+
+        UserResponseDto response = new UserResponseDto();
+        response.setId(savedUser.getId());
+        response.setName(savedUser.getName());
+        response.setEmail(savedUser.getEmail());
+
+        return response;
     }
 }
