@@ -1,11 +1,13 @@
 package com.omkar.jobtracker.service.impl;
 
-import org.springframework.stereotype.Service;
-import java.util.List;
-
 import com.omkar.jobtracker.entity.User;
+import com.omkar.jobtracker.exception.ResourceNotFoundException;
 import com.omkar.jobtracker.repository.UserRepository;
 import com.omkar.jobtracker.service.UserService;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,5 +26,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found with id: " + id)
+                );
     }
 }

@@ -9,6 +9,9 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -19,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    // CREATE USER (already done)
     @PostMapping
     public UserResponseDto createUser(
             @Valid @RequestBody UserRequestDto dto) {
@@ -30,11 +34,30 @@ public class UserController {
 
         User savedUser = userService.createUser(user);
 
-        UserResponseDto response = new UserResponseDto();
-        response.setId(savedUser.getId());
-        response.setName(savedUser.getName());
-        response.setEmail(savedUser.getEmail());
+        return mapToResponse(savedUser);
+    }
 
-        return response;
+    // ✅ GET ALL USERS
+    @GetMapping
+    public List<UserResponseDto> getAllUsers() {
+        return userService.getAllUsers()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    // ✅ GET USER BY ID
+    @GetMapping("/{id}")
+    public UserResponseDto getUserById(@PathVariable Long id) {
+        return mapToResponse(userService.getUserById(id));
+    }
+
+    // 🔁 COMMON MAPPING METHOD
+    private UserResponseDto mapToResponse(User user) {
+        UserResponseDto dto = new UserResponseDto();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        return dto;
     }
 }
