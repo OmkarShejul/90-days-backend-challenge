@@ -22,22 +22,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    // CREATE USER (already done)
+    // CREATE
     @PostMapping
-    public UserResponseDto createUser(
-            @Valid @RequestBody UserRequestDto dto) {
-
+    public UserResponseDto createUser(@Valid @RequestBody UserRequestDto dto) {
         User user = new User();
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
 
-        User savedUser = userService.createUser(user);
-
-        return mapToResponse(savedUser);
+        return mapToResponse(userService.createUser(user));
     }
 
-    // ✅ GET ALL USERS
+    // GET ALL
     @GetMapping
     public List<UserResponseDto> getAllUsers() {
         return userService.getAllUsers()
@@ -46,13 +42,33 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    // ✅ GET USER BY ID
+    // GET BY ID
     @GetMapping("/{id}")
     public UserResponseDto getUserById(@PathVariable Long id) {
         return mapToResponse(userService.getUserById(id));
     }
 
-    // 🔁 COMMON MAPPING METHOD
+    // ✅ UPDATE USER
+    @PutMapping("/{id}")
+    public UserResponseDto updateUser(
+            @PathVariable Long id,
+            @Valid @RequestBody UserRequestDto dto) {
+
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+
+        return mapToResponse(userService.updateUser(id, user));
+    }
+
+    // ✅ DELETE USER
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "User deleted successfully with id: " + id;
+    }
+
+    // COMMON MAPPER
     private UserResponseDto mapToResponse(User user) {
         UserResponseDto dto = new UserResponseDto();
         dto.setId(user.getId());
