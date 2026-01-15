@@ -1,65 +1,61 @@
 package com.omkar.jobtracker.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import com.omkar.jobtracker.dto.UserResponseDto;
 import com.omkar.jobtracker.entity.User;
 import com.omkar.jobtracker.exception.ResourceNotFoundException;
 import com.omkar.jobtracker.repository.UserRepository;
 import com.omkar.jobtracker.service.UserService;
-
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    // ✅ MANUAL CONSTRUCTOR (NO LOMBOK)
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public Page<UserResponseDto> getAllUsers(int page, int size, String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return userRepository.findAll(pageable)
+                .map(user -> new UserResponseDto(user.getId(),user.getName(),user.getEmail()));
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<UserResponseDto> searchUsersByName(String name, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return userRepository.findByNameContainingIgnoreCase(name, pageable)
+                .map(user -> new UserResponseDto(
+                        user.getId(),
+                        user.getName(),
+                        user.getEmail()
+                ));
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
+    public UserResponseDto getUserByEmail(String email) {
+
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found with id: " + id)
-                );
-    }
+                        new ResourceNotFoundException(
+                                "User not found with email: " + email));
 
-    // ✅ UPDATE USER
-    @Override
-    public User updateUser(Long id, User updatedUser) {
-
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found with id: " + id)
-                );
-
-        existingUser.setName(updatedUser.getName());
-        existingUser.setEmail(updatedUser.getEmail());
-
-        return userRepository.save(existingUser);
-    }
-
-    // ✅ DELETE USER
-    @Override
-    public void deleteUser(Long id) {
-
-        User user = userRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found with id: " + id)
-                );
-
-        userRepository.delete(user);
+        return new UserResponseDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+        );
     }
 }

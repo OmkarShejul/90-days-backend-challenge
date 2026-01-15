@@ -1,17 +1,14 @@
 package com.omkar.jobtracker.service;
 
-import com.omkar.jobtracker.entity.User;
-import java.util.List;
+import org.springframework.data.domain.Page;
+
+import com.omkar.jobtracker.dto.UserResponseDto;
 
 public interface UserService {
 
-    User createUser(User user);
+    Page<UserResponseDto> getAllUsers(int page, int size, String sortBy);
 
-    List<User> getAllUsers();
+    Page<UserResponseDto> searchUsersByName(String name, int page, int size);
 
-    User getUserById(Long id);
-
-    User updateUser(Long id, User user);
-
-    void deleteUser(Long id);
+    UserResponseDto getUserByEmail(String email);
 }
