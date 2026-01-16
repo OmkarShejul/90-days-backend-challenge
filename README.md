@@ -1,7 +1,7 @@
 # 90 Days Backend Challenge 🚀
 
 This repository documents my **90-day backend engineering challenge** using **Java & Spring Boot**.  
-The goal is to build a strong backend foundation by working on real-world APIs and following industry-level practices.
+The goal is to build a strong backend foundation by working on real-world APIs and following industry-level practices — **learning by building, in public**.
 
 ---
 
@@ -9,20 +9,21 @@ The goal is to build a strong backend foundation by working on real-world APIs a
 To become a confident backend developer by:
 - Building production-style REST APIs
 - Following clean architecture (Controller → Service → Repository)
-- Handling errors and edge cases properly
 - Writing scalable and maintainable backend code
-- Learning and sharing progress publicly
+- Handling errors, validations, and edge cases properly
+- Understanding real-world backend flows
+- Sharing daily learning and progress publicly
 
 ---
 
 ## 🛠 Tech Stack
-- Java
-- Spring Boot
-- Spring Data JPA
-- MySQL
-- Maven
-- Git & GitHub
-- Postman
+- Java  
+- Spring Boot  
+- Spring Data JPA  
+- MySQL  
+- Maven  
+- Git & GitHub  
+- Postman  
 
 ---
 
@@ -68,7 +69,7 @@ To become a confident backend developer by:
 - Proper validation before update/delete
 - Clean 404 handling for missing resources
 - Full CRUD flow completed
-- Real-world Git merge conflict handling
+- Real-world Git merge conflict handling experience
 
 ---
 
@@ -84,17 +85,35 @@ To become a confident backend developer by:
 
 ---
 
-## 📌 Current Status
-**Day 6 completed successfully** ✅  
+### ✅ Day 7 – Week 1 Review & Code Polish
+- Full API retesting using Postman
+- Code cleanup and formatting
+- Verified service-layer logic and edge cases
+- Updated project documentation (README)
+- Week 1 backend foundation completed successfully
 
-✔ Full CRUD APIs  
-✔ Pagination, sorting & search implemented  
-✔ Clean architecture followed  
-✔ Proper exception handling  
-✔ All APIs tested using Postman  
+---
+
+## 📌 Current Status
+**Week 1 completed successfully** ✅  
+
+✔ Full CRUD APIs implemented  
+✔ Pagination, sorting & search added  
+✔ Clean layered architecture followed  
+✔ Proper exception handling & validations  
+✔ All APIs tested with Postman  
+✔ Real-world backend workflow understood  
+
+---
+
+## 🚀 Next Phase (Week 2 Preview)
+- Spring Security basics
+- JWT authentication
+- Role-based access control
+- Securing APIs like real production systems
 
 ---
 
 > Learning by building.  
 > Improving every single day.  
-> Backend engineering in public 🚀
+> Backend engineering — **in public** 🚀🔥
