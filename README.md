@@ -94,6 +94,19 @@ To become a confident backend developer by:
 
 ---
 
+## 📘 API Endpoints
+
+### Users
+- **POST** `/users` – Create user  
+- **GET** `/users` – Get all users (pagination + sorting)  
+- **GET** `/users/{id}` – Get user by ID  
+- **GET** `/users/search?name=` – Search users by name  
+- **GET** `/users/email/{email}` – Get user by email  
+- **PUT** `/users/{id}` – Update user  
+- **DELETE** `/users/{id}` – Delete user  
+
+---
+
 ## 📌 Current Status
 **Week 1 completed successfully** ✅  
 
