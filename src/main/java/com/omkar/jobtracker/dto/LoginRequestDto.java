@@ -1,6 +1,7 @@
 package com.omkar.jobtracker.dto;
 
 public class LoginRequestDto {
+
     private String email;
     private String password;
 

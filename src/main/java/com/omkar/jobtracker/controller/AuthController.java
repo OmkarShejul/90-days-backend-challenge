@@ -1,26 +1,41 @@
 package com.omkar.jobtracker.controller;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.omkar.jobtracker.dto.AuthResponse;
 import com.omkar.jobtracker.dto.LoginRequestDto;
-import com.omkar.jobtracker.dto.LoginResponseDto;
 import com.omkar.jobtracker.security.JwtUtil;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    public AuthController(AuthenticationManager authenticationManager,
+                          JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
+
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
+    public AuthResponse login(@RequestBody LoginRequestDto request) {
 
-        // TEMP hardcoded user (Day 10 me DB se hoga)
-        if (!request.getEmail().equals("test@gmail.com") ||
-            !request.getPassword().equals("12345")) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
 
-            return ResponseEntity.status(401).build();
-        }
-
-        String token = JwtUtil.generateToken(request.getEmail());
-        return ResponseEntity.ok(new LoginResponseDto(token));
+        String token = jwtUtil.generateToken(request.getEmail());
+        return new AuthResponse(token);
     }
 }

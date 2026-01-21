@@ -1,11 +1,9 @@
 package com.omkar.jobtracker.controller;
 
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.omkar.jobtracker.dto.UserRequestDto;
 import com.omkar.jobtracker.dto.UserResponseDto;
 import com.omkar.jobtracker.service.UserService;
 
@@ -15,12 +13,18 @@ public class UserController {
 
     private final UserService userService;
 
-    // ✅ MANUAL CONSTRUCTOR (FIXES THE ERROR)
+    // ✅ Manual constructor
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    // PAGINATION + SORTING
+    // ✅ CREATE USER (PUBLIC API)
+    @PostMapping
+    public UserResponseDto createUser(@RequestBody UserRequestDto request) {
+        return userService.createUser(request);
+    }
+
+    // 🔒 GET ALL USERS (JWT REQUIRED)
     @GetMapping
     public Page<UserResponseDto> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
@@ -30,7 +34,7 @@ public class UserController {
         return userService.getAllUsers(page, size, sortBy);
     }
 
-    // SEARCH BY NAME
+    // 🔒 SEARCH BY NAME
     @GetMapping("/search")
     public Page<UserResponseDto> searchUsers(
             @RequestParam String name,
@@ -40,7 +44,7 @@ public class UserController {
         return userService.searchUsersByName(name, page, size);
     }
 
-    // SEARCH BY EMAIL
+    // 🔒 SEARCH BY EMAIL
     @GetMapping("/search/email")
     public UserResponseDto getUserByEmail(@RequestParam String email) {
         return userService.getUserByEmail(email);
