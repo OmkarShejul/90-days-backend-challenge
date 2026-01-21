@@ -126,7 +126,3 @@ To become a confident backend developer by:
 - Securing APIs like real production systems
 
 ---
-
-> Learning by building.  
-> Improving every single day.  
-> Backend engineering — **in public** 🚀🔥
