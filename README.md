@@ -181,9 +181,3 @@ To become a confident backend developer by:
 * Backend best practices & refactoring
 
 ---
-
-> Learning by building.
-> Improving every single day.
-> Backend engineering — **in public** 🚀🔥
-
----
