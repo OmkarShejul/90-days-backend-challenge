@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +18,7 @@ import com.omkar.jobtracker.security.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true) // 🔥🔥 THIS FIXES @PreAuthorize
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
@@ -29,40 +31,40 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // ❌ Disable CSRF (JWT based auth)
             .csrf(csrf -> csrf.disable())
 
-            // ❌ No HTTP session (Stateless API)
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
-            // 🔐 Authorization rules
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ PUBLIC ENDPOINTS
-                .requestMatchers("/auth/**").permitAll()                 // login
-                .requestMatchers(HttpMethod.POST, "/users").permitAll()  // register
+                // ✅ PUBLIC
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers("/error").permitAll()
 
-                // 🔒 EVERYTHING ELSE NEEDS JWT
+                // 🔒 ADMIN ONLY
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                // 🔒 USER + ADMIN
+                .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
+
+                // 🔒 EVERYTHING ELSE
                 .anyRequest().authenticated()
             )
 
-            // 🔥 JWT FILTER (runs before Spring auth filter)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // ✅ REQUIRED FOR /auth/login
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
-    // ✅ PASSWORD ENCODER
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

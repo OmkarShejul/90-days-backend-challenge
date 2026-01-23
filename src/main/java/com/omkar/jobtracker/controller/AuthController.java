@@ -1,15 +1,12 @@
 package com.omkar.jobtracker.controller;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.omkar.jobtracker.dto.AuthResponse;
 import com.omkar.jobtracker.dto.LoginRequestDto;
+import com.omkar.jobtracker.security.CustomUserDetails;
 import com.omkar.jobtracker.security.JwtUtil;
 
 @RestController
@@ -28,14 +25,26 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequestDto request) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
+        Authentication authentication =
+                authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+                );
+
+        // 🔥 GET ROLE FROM DB
+        CustomUserDetails userDetails =
+                (CustomUserDetails) authentication.getPrincipal();
+
+        String role = userDetails.getRole();
+
+        String token = jwtUtil.generateToken(
+                request.getEmail(),
+                role
         );
 
-        String token = jwtUtil.generateToken(request.getEmail());
         return new AuthResponse(token);
     }
+
 }

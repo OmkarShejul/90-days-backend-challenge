@@ -1,10 +1,8 @@
 package com.omkar.jobtracker.security;
 
 import java.util.Date;
-
 import javax.crypto.SecretKey;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
@@ -23,9 +21,11 @@ public class JwtUtil {
     private final SecretKey key =
             Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
+
         return Jwts.builder()
                 .setSubject(username)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + EXPIRATION_TIME)
@@ -38,13 +38,11 @@ public class JwtUtil {
         return extractClaims(token).getSubject();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        return username.equals(userDetails.getUsername())
-                && !isTokenExpired(token);
+    public String extractRole(String token) {
+        return extractClaims(token).get("role", String.class);
     }
 
-    boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractClaims(token)
                 .getExpiration()
                 .before(new Date());
@@ -52,7 +50,7 @@ public class JwtUtil {
 
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)   // ✅ THIS IS THE FIX
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

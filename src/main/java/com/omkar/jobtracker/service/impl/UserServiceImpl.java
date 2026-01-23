@@ -1,9 +1,6 @@
 package com.omkar.jobtracker.service.impl;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +17,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // ✅ Manual constructor (NO Lombok)
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -34,6 +30,9 @@ public class UserServiceImpl implements UserService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        // 🔥 DEFAULT ROLE
+        user.setRole("USER");
 
         User savedUser = userRepository.save(user);
 
@@ -50,10 +49,10 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
         return userRepository.findAll(pageable)
-                .map(user -> new UserResponseDto(
-                        user.getId(),
-                        user.getName(),
-                        user.getEmail()
+                .map(u -> new UserResponseDto(
+                        u.getId(),
+                        u.getName(),
+                        u.getEmail()
                 ));
     }
 
@@ -63,10 +62,10 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(page, size);
 
         return userRepository.findByNameContainingIgnoreCase(name, pageable)
-                .map(user -> new UserResponseDto(
-                        user.getId(),
-                        user.getName(),
-                        user.getEmail()
+                .map(u -> new UserResponseDto(
+                        u.getId(),
+                        u.getName(),
+                        u.getEmail()
                 ));
     }
 
