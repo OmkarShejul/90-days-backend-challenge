@@ -5,7 +5,7 @@ The goal is to build a strong backend foundation by working on real-world APIs a
 
 ---
 
-## 🎯 Goal
+## 🎯 Goal:
 
 To become a confident backend developer by:
 
@@ -19,7 +19,7 @@ To become a confident backend developer by:
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Tech Stack:
 
 * Java
 * Spring Boot
@@ -33,7 +33,7 @@ To become a confident backend developer by:
 
 ---
 
-## 📅 Progress Tracker
+## 📅 Progress Tracker:
 
 ### ✅ Day 1 – Foundation Setup
 
@@ -140,7 +140,7 @@ To become a confident backend developer by:
 
 ---
 
-## 📘 API Endpoints
+## 📘 API Endpoints:
 
 ### Authentication
 
@@ -158,7 +158,7 @@ To become a confident backend developer by:
 
 ---
 
-## 📌 Current Status
+## 📌 Current Status:
 
 **Day 10 completed successfully** ✅
 
@@ -173,7 +173,7 @@ To become a confident backend developer by:
 
 ---
 
-## 🚀 Next Phase (Week 2 Continued)
+## 🚀 Next Phase (Week 2 Continued):
 
 * Role-based access control (RBAC)
 * Securing APIs by roles
