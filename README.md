@@ -5,7 +5,7 @@ The goal is to build a strong backend foundation by working on real-world APIs a
 
 ---
 
-## 🎯 Goal:
+## 🎯 Goal
 
 To become a confident backend developer by:
 
@@ -14,12 +14,12 @@ To become a confident backend developer by:
 * Writing scalable and maintainable backend code
 * Handling errors, validations, and edge cases properly
 * Understanding real-world backend flows
-* Implementing authentication & security correctly
+* Implementing authentication & authorization correctly
 * Sharing daily learning and progress publicly
 
 ---
 
-## 🛠 Tech Stack:
+## 🛠 Tech Stack
 
 * Java
 * Spring Boot
@@ -33,7 +33,7 @@ To become a confident backend developer by:
 
 ---
 
-## 📅 Progress Tracker:
+## 📅 Progress Tracker
 
 ### ✅ Day 1 – Foundation Setup
 
@@ -140,7 +140,21 @@ To become a confident backend developer by:
 
 ---
 
-## 📘 API Endpoints:
+### ✅ Day 11 – Role-Based Access Control (RBAC)
+
+* Added **USER** and **ADMIN** roles
+* Stored roles at database level
+* Implemented role-based authorities using `ROLE_` prefix
+* Secured admin-only endpoints (`/admin/**`)
+* Configured access rules using Spring Security
+* Debugged real-world **403 Forbidden** issues
+* Ensured correct role → authority → access mapping
+* Verified admin & user access using JWT + Postman
+* Understood real production-level authorization flow
+
+---
+
+## 📘 API Endpoints
 
 ### Authentication
 
@@ -156,28 +170,40 @@ To become a confident backend developer by:
 * **PUT** `/users/{id}` – Update user (JWT required)
 * **DELETE** `/users/{id}` – Delete user (JWT required)
 
+### Admin
+
+* **GET** `/admin/dashboard` – Admin-only access (ADMIN role required)
+
 ---
 
-## 📌 Current Status:
+## 📌 Current Status
 
-**Day 10 completed successfully** ✅
+**Day 11 completed successfully** ✅
 
 ✔ Full CRUD APIs implemented
 ✔ Pagination, sorting & search added
 ✔ Spring Security integrated
 ✔ JWT authentication working end-to-end
-✔ Public & protected endpoints properly secured
+✔ Role-based access control implemented
+✔ Admin & user authorization verified
+✔ Public & protected endpoints secured
 ✔ Stateless backend architecture followed
 ✔ All APIs tested with Postman
-✔ Real-world backend security workflow understood
+✔ Real-world backend security & RBAC workflow understood
 
 ---
 
-## 🚀 Next Phase (Week 2 Continued):
+## 🚀 Next Phase (Week 2 Continued)
 
-* Role-based access control (RBAC)
-* Securing APIs by roles
-* Exception handling for security
-* Backend best practices & refactoring
+* Custom authentication & access denied handlers
+* Security exception handling (401 / 403 responses)
+* Backend refactoring & best practices
+* Cleaner, production-grade API responses
+
+---
+
+> Learning by building.
+> Debugging by doing.
+> Backend engineering — **in public** 🚀🔥
 
 ---
