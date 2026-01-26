@@ -2,12 +2,15 @@ package com.omkar.jobtracker.security;
 
 import java.io.IOException;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,9 +30,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-
         return path.startsWith("/auth")
-            || (path.equals("/users") && request.getMethod().equals("POST"));
+                || (path.equals("/users") && request.getMethod().equals("POST"));
     }
 
     @Override
@@ -57,8 +59,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (email != null &&
-            SecurityContextHolder.getContext().getAuthentication() == null &&
-            !jwtUtil.isTokenExpired(jwt)) {
+                SecurityContextHolder.getContext().getAuthentication() == null &&
+                !jwtUtil.isTokenExpired(jwt)) {
 
             UserDetails userDetails =
                     userDetailsService.loadUserByUsername(email);
