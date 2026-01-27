@@ -1,7 +1,9 @@
+---
+
 # 90 Days Backend Challenge 🚀
 
 This repository documents my **90-day backend engineering challenge** using **Java & Spring Boot**.
-The goal is to build a strong backend foundation by working on real-world APIs and following industry-level practices — **learning by building, in public**.
+The goal is to build a **production-grade backend foundation** by working on real-world APIs and following industry-level practices — **learning by building, in public**.
 
 ---
 
@@ -15,6 +17,7 @@ To become a confident backend developer by:
 * Handling errors, validations, and edge cases properly
 * Understanding real-world backend flows
 * Implementing authentication & authorization correctly
+* Designing consistent, frontend-friendly API responses
 * Sharing daily learning and progress publicly
 
 ---
@@ -150,7 +153,29 @@ To become a confident backend developer by:
 * Debugged real-world **403 Forbidden** issues
 * Ensured correct role → authority → access mapping
 * Verified admin & user access using JWT + Postman
-* Understood real production-level authorization flow
+* Understood production-level authorization flow
+
+---
+
+### ✅ Day 12 – API Response Standardization
+
+* Designed a global `ApiResponse<T>` structure
+* Unified success and failure responses
+* Standardized response format across all APIs
+* Made backend responses frontend-friendly
+* Removed inconsistent and default error outputs
+* Improved API predictability and maintainability
+
+---
+
+### ✅ Day 13 – Security Error Handling (Production-Level)
+
+* Implemented custom **AuthenticationEntryPoint** (401 handling)
+* Implemented custom **AccessDeniedHandler** (403 handling)
+* Replaced default Spring Security error responses
+* Returned clean, consistent JSON error responses
+* Integrated security errors with `ApiResponse` format
+* Achieved fully professional, production-grade API behavior
 
 ---
 
@@ -178,7 +203,7 @@ To become a confident backend developer by:
 
 ## 📌 Current Status
 
-**Day 11 completed successfully** ✅
+**Day 13 completed successfully** ✅
 
 ✔ Full CRUD APIs implemented
 ✔ Pagination, sorting & search added
@@ -186,19 +211,21 @@ To become a confident backend developer by:
 ✔ JWT authentication working end-to-end
 ✔ Role-based access control implemented
 ✔ Admin & user authorization verified
-✔ Public & protected endpoints secured
+✔ Custom 401 / 403 security handling
+✔ Standardized API responses across backend
 ✔ Stateless backend architecture followed
 ✔ All APIs tested with Postman
-✔ Real-world backend security & RBAC workflow understood
+✔ Real-world backend security & error-handling workflow understood
 
 ---
 
-## 🚀 Next Phase (Week 2 Continued)
+## 🚀 Next Phase (Week 3 Preview)
 
-* Custom authentication & access denied handlers
-* Security exception handling (401 / 403 responses)
+* API versioning
+* Logging & monitoring basics
+* Performance considerations
 * Backend refactoring & best practices
-* Cleaner, production-grade API responses
+* Interview-level backend discussions
 
 ---
 
