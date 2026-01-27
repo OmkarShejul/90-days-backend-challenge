@@ -39,20 +39,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+            // ❌ Disable CSRF (JWT based)
             .csrf(csrf -> csrf.disable())
 
+            // ❌ Stateless session
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
+            // 🔥 Custom security error handling
             .exceptionHandling(ex -> ex
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .accessDeniedHandler(accessDeniedHandler)
+                .authenticationEntryPoint(authenticationEntryPoint) // 401
+                .accessDeniedHandler(accessDeniedHandler)           // 403
             )
 
+            // 🔐 Authorization rules
             .authorizeHttpRequests(auth -> auth
 
-                // ✅ PUBLIC
+                // ✅ PUBLIC APIs
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers("/error").permitAll()
@@ -63,20 +67,24 @@ public class SecurityConfig {
                 // 🔒 USER + ADMIN
                 .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
 
+                // 🔒 EVERYTHING ELSE
                 .anyRequest().authenticated()
             )
 
+            // 🔥 JWT filter
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    // ✅ Required for /auth/login
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
+    // ✅ Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

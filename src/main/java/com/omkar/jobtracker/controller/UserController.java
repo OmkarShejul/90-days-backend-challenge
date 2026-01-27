@@ -3,6 +3,7 @@ package com.omkar.jobtracker.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import com.omkar.jobtracker.dto.ApiResponse;
 import com.omkar.jobtracker.dto.UserRequestDto;
 import com.omkar.jobtracker.dto.UserResponseDto;
 import com.omkar.jobtracker.service.UserService;
@@ -26,13 +27,18 @@ public class UserController {
 
     // 🔒 GET ALL USERS (JWT REQUIRED)
     @GetMapping
-    public Page<UserResponseDto> getAllUsers(
+    public ApiResponse<Page<UserResponseDto>> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy
     ) {
-        return userService.getAllUsers(page, size, sortBy);
+        return new ApiResponse<>(
+                true,
+                "Users fetched successfully",
+                userService.getAllUsers(page, size, sortBy)
+        );
     }
+
 
     // 🔒 SEARCH BY NAME
     @GetMapping("/search")
