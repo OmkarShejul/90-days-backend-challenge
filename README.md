@@ -221,11 +221,11 @@ To become a confident backend developer by:
 
 ## 🚀 Next Phase (Week 3 Preview)
 
-* API versioning
-* Logging & monitoring basics
-* Performance considerations
-* Backend refactoring & best practices
-* Interview-level backend discussions
+* API versioning.
+* Logging & monitoring basics.
+* Performance considerations.
+* Backend refactoring & best practices.
+* Interview-level backend discussions.
 
 ---
 
