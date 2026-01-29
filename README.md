@@ -7,7 +7,7 @@ The goal is to build a **production-grade backend foundation** by working on rea
 
 ---
 
-## 🎯 Goal
+## 🎯 Goal:
 
 To become a confident backend developer by:
 
@@ -22,7 +22,7 @@ To become a confident backend developer by:
 
 ---
 
-## 🛠 Tech Stack
+## 🛠 Tech Stack:
 
 * Java
 * Spring Boot
@@ -36,7 +36,7 @@ To become a confident backend developer by:
 
 ---
 
-## 📅 Progress Tracker
+## 📅 Progress Tracker:
 
 ### ✅ Day 1 – Foundation Setup
 
