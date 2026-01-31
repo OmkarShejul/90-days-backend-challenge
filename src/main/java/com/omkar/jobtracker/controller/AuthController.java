@@ -1,9 +1,13 @@
 package com.omkar.jobtracker.controller;
 
-import org.springframework.security.authentication.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import com.omkar.jobtracker.dto.ApiResponse;
 import com.omkar.jobtracker.dto.AuthResponse;
 import com.omkar.jobtracker.dto.LoginRequestDto;
 import com.omkar.jobtracker.security.CustomUserDetails;
@@ -13,38 +17,51 @@ import com.omkar.jobtracker.security.JwtUtil;
 @RequestMapping("/auth")
 public class AuthController {
 
+    private static final Logger log =
+            LoggerFactory.getLogger(AuthController.class);
+
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public AuthController(AuthenticationManager authenticationManager,
-                          JwtUtil jwtUtil) {
+    public AuthController(
+            AuthenticationManager authenticationManager,
+            JwtUtil jwtUtil
+    ) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginRequestDto request) {
+    public ApiResponse<AuthResponse> login(
+            @RequestBody LoginRequestDto request
+    ) {
+
+        log.info("Login attempt for email: {}", request.getEmail());
 
         Authentication authentication =
                 authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
-                            request.getPassword()
-                    )
+                        new UsernamePasswordAuthenticationToken(
+                                request.getEmail(),
+                                request.getPassword()
+                        )
                 );
 
-        // 🔥 GET ROLE FROM DB
         CustomUserDetails userDetails =
                 (CustomUserDetails) authentication.getPrincipal();
 
-        String role = userDetails.getRole();
-
         String token = jwtUtil.generateToken(
-                request.getEmail(),
-                role
+                userDetails.getUsername(),
+                userDetails.getRole()
         );
 
-        return new AuthResponse(token);
-    }
+        AuthResponse authResponse =new AuthResponse(token,userDetails.getUsername(),userDetails.getRole());
 
+        log.info("Login successful for email: {}", request.getEmail());
+
+        return new ApiResponse<>(
+                true,
+                "Login successful",
+                authResponse
+        );
+    }
 }

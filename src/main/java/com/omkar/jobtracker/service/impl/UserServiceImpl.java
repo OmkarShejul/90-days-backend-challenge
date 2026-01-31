@@ -1,5 +1,8 @@
 package com.omkar.jobtracker.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +16,8 @@ import com.omkar.jobtracker.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -24,24 +28,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto createUser(UserRequestDto request) {
+public UserResponseDto createUser(UserRequestDto request) {
 
-        User user = new User();
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+    log.info("Creating new user with email: {}", request.getEmail());
 
-        // 🔥 DEFAULT ROLE
-        user.setRole("USER");
+    User user = new User();
+    user.setName(request.getName());
+    user.setEmail(request.getEmail());
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
+    user.setRole("USER");
 
-        User savedUser = userRepository.save(user);
+    User savedUser = userRepository.save(user);
 
-        return new UserResponseDto(
-                savedUser.getId(),
-                savedUser.getName(),
-                savedUser.getEmail()
-        );
-    }
+    log.info("User created successfully with ID: {}", savedUser.getId());
+
+    return new UserResponseDto(
+            savedUser.getId(),
+            savedUser.getName(),
+            savedUser.getEmail()
+    );
+}
 
     @Override
     public Page<UserResponseDto> getAllUsers(int page, int size, String sortBy) {

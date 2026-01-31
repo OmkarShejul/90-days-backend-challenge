@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.omkar.jobtracker.logging.RequestResponseLoggingFilter;
 import com.omkar.jobtracker.security.CustomAccessDeniedHandler;
 import com.omkar.jobtracker.security.CustomAuthenticationEntryPoint;
 import com.omkar.jobtracker.security.JwtAuthFilter;
@@ -24,67 +25,59 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
+    private final RequestResponseLoggingFilter loggingFilter;
 
     public SecurityConfig(
             JwtAuthFilter jwtAuthFilter,
             CustomAuthenticationEntryPoint authenticationEntryPoint,
-            CustomAccessDeniedHandler accessDeniedHandler
+            CustomAccessDeniedHandler accessDeniedHandler,
+            RequestResponseLoggingFilter loggingFilter
     ) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
+        this.loggingFilter = loggingFilter;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // ❌ Disable CSRF (JWT based)
             .csrf(csrf -> csrf.disable())
 
-            // ❌ Stateless session
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
-            // 🔥 Custom security error handling
             .exceptionHandling(ex -> ex
-                .authenticationEntryPoint(authenticationEntryPoint) // 401
-                .accessDeniedHandler(accessDeniedHandler)           // 403
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
             )
 
-            // 🔐 Authorization rules
             .authorizeHttpRequests(auth -> auth
-
-                // ✅ PUBLIC APIs
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers("/error").permitAll()
 
-                // 🔒 ADMIN ONLY
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-
-                // 🔒 USER + ADMIN
                 .requestMatchers("/users/**").hasAnyRole("USER", "ADMIN")
 
-                // 🔒 EVERYTHING ELSE
                 .anyRequest().authenticated()
             )
 
-            // 🔥 JWT filter
+            // ✅ BOTH filters relative to a KNOWN filter
+            .addFilterBefore(loggingFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // ✅ Required for /auth/login
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
-    // ✅ Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
