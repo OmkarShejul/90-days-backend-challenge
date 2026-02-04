@@ -1,4 +1,4 @@
-# 90 Days Backend Challenge 🚀
+# 🚀 90 Days Backend Challenge
 
 This repository documents my **90-day backend engineering challenge** using **Java & Spring Boot**.  
 The goal is to build a **production-grade backend foundation** by working on real-world APIs and following industry-level practices — **learning by building, in public**.
@@ -12,11 +12,12 @@ To become a confident backend developer by:
 - Building production-style REST APIs
 - Following clean architecture (Controller → Service → Repository)
 - Writing scalable and maintainable backend code
-- Handling errors, validations, and edge cases properly
+- Handling errors, validations, and edge cases professionally
 - Understanding real-world backend request–response flows
 - Implementing authentication & authorization correctly
 - Designing consistent, frontend-friendly API responses
 - Applying production-level security practices
+- Debugging real-world backend & security issues
 - Sharing daily learning and progress publicly
 
 ---
@@ -172,6 +173,19 @@ To become a confident backend developer by:
 
 ---
 
+### ✅ Day 15 – Production-Grade Security & Error Consistency
+- Implemented custom `AuthenticationEntryPoint` (401 handling)
+- Implemented custom `AccessDeniedHandler` (403 handling)
+- Centralized global exception handling
+- Standardized all success & error responses using `ApiResponse<T>`
+- Removed default Spring Security error responses
+- Prevented exposure of sensitive internal error details
+- Fixed remaining security filter ordering issues
+- Verified all edge cases using Postman (401 / 403 / validation errors)
+- Achieved predictable, frontend-friendly API behavior
+
+---
+
 ## 📘 API Endpoints
 
 ### Authentication
@@ -193,7 +207,7 @@ To become a confident backend developer by:
 
 ## 📌 Current Status
 
-**Day 14 completed successfully** ✅
+**Day 15 completed successfully** ✅
 
 ✔ Full CRUD APIs implemented  
 ✔ Pagination, sorting & search added  
@@ -204,8 +218,9 @@ To become a confident backend developer by:
 ✔ Standardized API responses  
 ✔ Secure & stable filter chain  
 ✔ Stateless backend architecture  
+✔ Production-grade error handling  
 ✔ All APIs tested with Postman  
-✔ Real-world debugging & production issues handled  
+✔ Real-world debugging & security issues resolved  
 
 ---
 
@@ -213,6 +228,7 @@ To become a confident backend developer by:
 
 - API versioning
 - Logging & monitoring fundamentals
+- Correlation IDs & request tracing
 - Performance considerations
 - Backend refactoring & best practices
 - Interview-level backend discussions
