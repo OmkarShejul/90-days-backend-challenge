@@ -14,18 +14,23 @@ public class UserController {
 
     private final UserService userService;
 
-    // ✅ Manual constructor
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    // ✅ CREATE USER (PUBLIC API)
+    // ✅ CREATE USER (PUBLIC)
     @PostMapping
-    public UserResponseDto createUser(@RequestBody UserRequestDto request) {
-        return userService.createUser(request);
+    public ApiResponse<UserResponseDto> createUser(
+            @RequestBody UserRequestDto request) {
+
+        return new ApiResponse<>(
+                true,
+                "User created successfully",
+                userService.createUser(request)
+        );
     }
 
-    // 🔒 GET ALL USERS (JWT REQUIRED)
+    // 🔒 GET ALL USERS (JWT)
     @GetMapping
     public ApiResponse<Page<UserResponseDto>> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
@@ -39,20 +44,29 @@ public class UserController {
         );
     }
 
-
     // 🔒 SEARCH BY NAME
     @GetMapping("/search")
-    public Page<UserResponseDto> searchUsers(
+    public ApiResponse<Page<UserResponseDto>> searchUsers(
             @RequestParam String name,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size
     ) {
-        return userService.searchUsersByName(name, page, size);
+        return new ApiResponse<>(
+                true,
+                "Users searched successfully",
+                userService.searchUsersByName(name, page, size)
+        );
     }
 
     // 🔒 SEARCH BY EMAIL
     @GetMapping("/search/email")
-    public UserResponseDto getUserByEmail(@RequestParam String email) {
-        return userService.getUserByEmail(email);
+    public ApiResponse<UserResponseDto> getUserByEmail(
+            @RequestParam String email
+    ) {
+        return new ApiResponse<>(
+                true,
+                "User fetched successfully",
+                userService.getUserByEmail(email)
+        );
     }
 }

@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // ✅ BOTH filters relative to a KNOWN filter
+            // 🔥 ORDER MATTERS
             .addFilterBefore(loggingFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
