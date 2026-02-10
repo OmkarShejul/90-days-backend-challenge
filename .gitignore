@@ -41,3 +41,7 @@ build/
 hs_err_pid*
 replay_pid*
 .metadata/
+
+# Logs
+logs/
+*.log
